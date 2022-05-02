@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather report</title>
+    <style>
+        #container {
+            padding: 100px 50px;
+            margin: 100px;
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+            text-align: center;
+        }
+
+        #container+#data {
+            margin: auto;
+            padding: auto;
+            text-align: center;
+            width: 30%;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+        }
+
+        #container+#data>p {
+
+            padding: 10px;
+            text-align: center;
+            width: 95%;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+
+        <label for="">City</label>
+        <input type="text" name="city" id="city">
+        <button onclick="getwether()"> Check</button>
+
+    </div>
+    <div id="data">
+
+    </div>
+</body>
+<script>
+    async function getwether() {
+        var city = document.getElementById('city').value;
+        //  console.log(city)
+        var url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b49200d690bb1cce0e2a4dd2e53cb743`
+        var res = await fetch(url)
+        var data = await res.json()
+        console.log(data)
+        displaydata(data)
+
+    }
+    var show_data = document.getElementById('data')
+    function displaydata(data) {
+        var temp = document.createElement('p')
+        temp.innerText = `Temp: ${data.main.temp}°`
+        var hum = document.createElement('p')
+        hum.innerText = `Humiditiy: ${data.main.humidity}`
+
+        var pre = document.createElement('p')
+        pre.innerText = `Pressure: ${data.main.pressure}`
+        var sunrise = document.createElement('p')
+        sunrise.innerText = `Sun rise: ${data.sys.sunrise}`
+        var sunset = document.createElement('p')
+        sunset.innerText = `Sun set: ${data.sys.sunset}`
+        var wind = document.createElement('p')
+        wind.innerText = `Wind Speed: ${data.wind.speed}`
+        var weather = document.createElement('p')
+        weather.innerText = `Weather Description: ${data.weather[0].description}`
+
+        var weathermain = document.createElement('p')
+        weathermain.innerText = `Wather main: ${data.weather[0].main}`
+
+        show_data.append(temp, hum, pre, wind, sunrise, sunset, weather, weathermain)
+
+    }
+</script>
+
+</html>
